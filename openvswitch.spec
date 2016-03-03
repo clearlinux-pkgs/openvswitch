@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.4.0
-Release  : 12
+Release  : 13
 URL      : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source1  : openvswitch.service
@@ -15,13 +15,23 @@ Requires: openvswitch-bin
 Requires: openvswitch-config
 Requires: openvswitch-doc
 Requires: openvswitch-data
+BuildRequires : automake
+BuildRequires : automake-dev
+BuildRequires : dpdk-bin
+BuildRequires : dpdk-lib
+BuildRequires : gettext-bin
 BuildRequires : groff
 BuildRequires : libc-bin
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : openssl-dev
 BuildRequires : pbr
 BuildRequires : pip
+BuildRequires : pkg-config-dev
 BuildRequires : python-dev
 BuildRequires : setuptools
+Patch1: 0001-Add-name-correction-to-dpdk-combine-lib.patch
 
 %description
 Open vSwitch provides standard network bridging functions and
@@ -75,9 +85,10 @@ doc components for the openvswitch package.
 
 %prep
 %setup -q -n openvswitch-2.4.0
+%patch1 -p1
 
 %build
-%configure --disable-static
+%reconfigure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
 make V=1  %{?_smp_mflags}
 
 %install
