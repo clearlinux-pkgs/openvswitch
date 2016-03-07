@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.4.0
-Release  : 13
+Release  : 14
 URL      : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source1  : openvswitch.service
@@ -17,7 +17,7 @@ Requires: openvswitch-doc
 Requires: openvswitch-data
 BuildRequires : automake
 BuildRequires : automake-dev
-BuildRequires : dpdk-bin
+BuildRequires : dpdk-dev
 BuildRequires : dpdk-lib
 BuildRequires : gettext-bin
 BuildRequires : groff
