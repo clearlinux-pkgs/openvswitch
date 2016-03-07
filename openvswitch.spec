@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.4.0
-Release  : 14
+Release  : 15
 URL      : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.4.0.tar.gz
 Source1  : openvswitch.service
