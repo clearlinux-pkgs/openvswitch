@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.5.0
-Release  : 22
+Release  : 23
 URL      : http://openvswitch.org/releases/openvswitch-2.5.0.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.5.0.tar.gz
 Source1  : openvswitch.service
@@ -24,6 +24,7 @@ BuildRequires : pbr
 BuildRequires : pip
 BuildRequires : python-dev
 BuildRequires : setuptools
+Patch1: 0001-Add-dpdk-support.patch
 
 %description
 Open vSwitch provides standard network bridging functions and
@@ -77,6 +78,7 @@ doc components for the openvswitch package.
 
 %prep
 %setup -q -n openvswitch-2.5.0
+%patch1 -p1
 
 %build
 %configure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
