@@ -1,0 +1,97 @@
+From 3b542a8131d2e193f14ca8285349837b9c26f5f3 Mon Sep 17 00:00:00 2001
+From: Mario Alfredo Carrillo Arevalo <mario.alfredo.c.arevalo@intel.com>
+Date: Tue, 3 May 2016 19:06:35 -0500
+Subject: [PATCH] Add dpdk support
+
+Signed-off-by: Mario Alfredo Carrillo Arevalo <mario.alfredo.c.arevalo@intel.com>
+---
+ .travis/build.sh  |  3 +--
+ lib/netdev-dpdk.c | 27 +++++++++++++++------------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/.travis/build.sh b/.travis/build.sh
+index 4df618b..1b3c431 100755
+--- a/.travis/build.sh
++++ b/.travis/build.sh
+@@ -49,7 +49,6 @@ function install_dpdk()
+         cd dpdk-$1
+     fi
+     find ./ -type f | xargs sed -i 's/max-inline-insns-single=100/max-inline-insns-single=400/'
+-    sed -ri 's,(CONFIG_RTE_BUILD_COMBINE_LIBS=).*,\1y,' config/common_linuxapp
+     echo 'CONFIG_RTE_BUILD_FPIC=y' >>config/common_linuxapp
+     sed -ri '/EXECENV_CFLAGS  = -pthread -fPIC/{s/$/\nelse ifeq ($(CONFIG_RTE_BUILD_FPIC),y)/;s/$/\nEXECENV_CFLAGS  = -pthread -fPIC/}' mk/exec-env/linuxapp/rte.vars.mk
+     make config CC=gcc T=x86_64-native-linuxapp-gcc
+@@ -69,7 +68,7 @@ fi
+ 
+ if [ "$DPDK" ]; then
+     if [ -z "$DPDK_VER" ]; then
+-        DPDK_VER="2.2.0"
++        DPDK_VER="16.04"
+     fi
+     install_dpdk $DPDK_VER
+     if [ "$CC" = "clang" ]; then
+diff --git a/lib/netdev-dpdk.c b/lib/netdev-dpdk.c
+index 75c369a..26d42b1 100644
+--- a/lib/netdev-dpdk.c
++++ b/lib/netdev-dpdk.c
+@@ -1566,35 +1566,35 @@ netdev_dpdk_get_features(const struct netdev *netdev_,
+     link = dev->link;
+     ovs_mutex_unlock(&dev->mutex);
+ 
+-    if (link.link_duplex == ETH_LINK_AUTONEG_DUPLEX) {
+-        if (link.link_speed == ETH_LINK_SPEED_AUTONEG) {
+-            *current = NETDEV_F_AUTONEG;
+-        }
+-    } else if (link.link_duplex == ETH_LINK_HALF_DUPLEX) {
+-        if (link.link_speed == ETH_LINK_SPEED_10) {
++    if (link.link_duplex == ETH_LINK_HALF_DUPLEX) {
++        if (link.link_speed == ETH_SPEED_NUM_10M) {
+             *current = NETDEV_F_10MB_HD;
+         }
+-        if (link.link_speed == ETH_LINK_SPEED_100) {
++        if (link.link_speed == ETH_SPEED_NUM_100M) {
+             *current = NETDEV_F_100MB_HD;
+         }
+-        if (link.link_speed == ETH_LINK_SPEED_1000) {
++        if (link.link_speed == ETH_SPEED_NUM_1G) {
+             *current = NETDEV_F_1GB_HD;
+         }
+     } else if (link.link_duplex == ETH_LINK_FULL_DUPLEX) {
+-        if (link.link_speed == ETH_LINK_SPEED_10) {
++        if (link.link_speed == ETH_SPEED_NUM_10M) {
+             *current = NETDEV_F_10MB_FD;
+         }
+-        if (link.link_speed == ETH_LINK_SPEED_100) {
++        if (link.link_speed == ETH_SPEED_NUM_100M) {
+             *current = NETDEV_F_100MB_FD;
+         }
+-        if (link.link_speed == ETH_LINK_SPEED_1000) {
++        if (link.link_speed == ETH_SPEED_NUM_1G) {
+             *current = NETDEV_F_1GB_FD;
+         }
+-        if (link.link_speed == ETH_LINK_SPEED_10000) {
++        if (link.link_speed == ETH_SPEED_NUM_10G) {
+             *current = NETDEV_F_10GB_FD;
+         }
+     }
+ 
++	if (link.link_autoneg) {
++		*current |= NETDEV_F_AUTONEG;
++	}
++
+     return 0;
+ }
+ 
+@@ -2052,6 +2052,9 @@ static int
+ dpdk_vhost_class_init(void)
+ {
+     rte_vhost_driver_callback_register(&virtio_net_device_ops);
++	rte_vhost_feature_disable(1ULL << VIRTIO_NET_F_HOST_TSO4
++							| 1ULL << VIRTIO_NET_F_HOST_TSO6
++							| 1ULL << VIRTIO_NET_F_CSUM);
+     ovs_thread_create("vhost_thread", start_vhost_loop, NULL);
+     return 0;
+ }
+-- 
+2.5.5
+
