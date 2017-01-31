@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.6.1
-Release  : 30
+Release  : 31
 URL      : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source1  : openvswitch.service
@@ -83,11 +83,13 @@ doc components for the openvswitch package.
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1483634300
+export SOURCE_DATE_EPOCH=1485901168
+unset LD_AS_NEEDED
 %configure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
 make V=1  %{?_smp_mflags}
 
 %install
+export SOURCE_DATE_EPOCH=1485901168
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
