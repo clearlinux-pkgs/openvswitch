@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.6.1
-Release  : 32
+Release  : 33
 URL      : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source1  : openvswitch.service
