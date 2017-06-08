@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.6.1
-Release  : 33
+Release  : 34
 URL      : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source1  : openvswitch.service
@@ -25,8 +25,7 @@ BuildRequires : pip
 BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : setuptools
-BuildRequires : six
-BuildRequires : six-python
+Patch1: cve-2017-9264.patch
 
 %description
 Open vSwitch provides standard network bridging functions and
@@ -80,16 +79,24 @@ doc components for the openvswitch package.
 
 %prep
 %setup -q -n openvswitch-2.6.1
+%patch1 -p1
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1485901168
+export SOURCE_DATE_EPOCH=1496961185
 unset LD_AS_NEEDED
+export CFLAGS="$CFLAGS -fstack-protector-strong "
+export FCFLAGS="$CFLAGS -fstack-protector-strong "
+export FFLAGS="$CFLAGS -fstack-protector-strong "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
 %configure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1485901168
+export SOURCE_DATE_EPOCH=1496961185
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
