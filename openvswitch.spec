@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.6.1
-Release  : 34
+Release  : 35
 URL      : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.6.1.tar.gz
 Source1  : openvswitch.service
@@ -15,17 +15,25 @@ Requires: openvswitch-bin
 Requires: openvswitch-config
 Requires: openvswitch-doc
 Requires: openvswitch-data
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : dpdk-dev
+BuildRequires : gettext-bin
 BuildRequires : groff
 BuildRequires : libc-bin
 BuildRequires : libcap-ng-dev
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : openssl-dev
 BuildRequires : pbr
 BuildRequires : pip
+BuildRequires : pkg-config-dev
 BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : setuptools
 Patch1: cve-2017-9264.patch
+Patch2: build.patch
 
 %description
 Open vSwitch provides standard network bridging functions and
@@ -80,23 +88,24 @@ doc components for the openvswitch package.
 %prep
 %setup -q -n openvswitch-2.6.1
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496961185
+export SOURCE_DATE_EPOCH=1506535113
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -fstack-protector-strong "
 export FCFLAGS="$CFLAGS -fstack-protector-strong "
 export FFLAGS="$CFLAGS -fstack-protector-strong "
 export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
-%configure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
+%reconfigure --disable-static --with-dpdk=/usr/share/dpdk/x86_64-native-linuxapp-gcc/
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1496961185
+export SOURCE_DATE_EPOCH=1506535113
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system

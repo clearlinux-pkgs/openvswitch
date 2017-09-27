@@ -1,0 +1,10 @@
+--- openvswitch-2.6.1/Makefile.am~	2016-09-28 06:26:57.000000000 +0000
++++ openvswitch-2.6.1/Makefile.am	2017-09-27 17:57:05.619892381 +0000
+@@ -348,7 +348,6 @@
+ endif
+ 
+ if HAVE_FLAKE8
+-ALL_LOCAL += flake8-check
+ # http://flake8.readthedocs.org/en/latest/warnings.html
+ # All warnings explicitly selected or ignored should be listed below.
+ #

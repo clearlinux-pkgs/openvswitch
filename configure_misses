@@ -1,0 +1,20 @@
+Configure miss: vmware.h usability
+Configure miss: vmware.h presence
+Configure miss: vmware.h
+Configure miss: MSVC x64 compiler
+Configure miss: dot
+Configure miss: whether strtok_r macro segfaults on some inputs
+Configure miss: struct stat.st_mtimensec
+Configure miss: struct ifreq.ifr_flagshigh
+Configure miss: net/if_mib.h
+Configure miss: valgrind/valgrind.h usability
+Configure miss: valgrind/valgrind.h presence
+Configure miss: valgrind/valgrind.h
+Configure miss: connect in -lsocket
+Configure miss: XenServer release
+Configure miss: whether gcc has <threads.h> that supports thread_local
+Configure miss: pthread_set_name_np
+Configure miss: whether gcc accepts -Wstrict-prototypes
+Configure miss: whether gcc accepts -Wold-style-definition
+Configure miss: whether gcc accepts -Wthread-safety
+Configure miss: whether gcc accepts -Qunused-arguments
