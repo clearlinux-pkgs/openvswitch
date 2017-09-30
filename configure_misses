@@ -14,7 +14,6 @@ Configure miss: connect in -lsocket
 Configure miss: XenServer release
 Configure miss: whether gcc has <threads.h> that supports thread_local
 Configure miss: pthread_set_name_np
-Configure miss: whether gcc accepts -Wstrict-prototypes
-Configure miss: whether gcc accepts -Wold-style-definition
 Configure miss: whether gcc accepts -Wthread-safety
 Configure miss: whether gcc accepts -Qunused-arguments
+Configure miss: whether dpdk datapath is enabled

@@ -1,3 +1,2 @@
-#0001-Add-dpdk-support.patch
-cve-2017-9264.patch
+##0001-Add-dpdk-support.patch
 build.patch
