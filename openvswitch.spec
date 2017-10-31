@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.8.1
-Release  : 36
+Release  : 37
 URL      : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source1  : openvswitch.service
@@ -25,6 +25,7 @@ BuildRequires : libcap-ng-dev
 BuildRequires : libtool
 BuildRequires : libtool-dev
 BuildRequires : m4
+BuildRequires : openssl-dev
 BuildRequires : pbr
 BuildRequires : pip
 BuildRequires : pkg-config-dev
@@ -92,7 +93,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1506797071
+export SOURCE_DATE_EPOCH=1509460469
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -fstack-protector-strong "
 export FCFLAGS="$CFLAGS -fstack-protector-strong "
@@ -102,7 +103,7 @@ export CXXFLAGS="$CXXFLAGS -fstack-protector-strong "
 make V=1  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1506797071
+export SOURCE_DATE_EPOCH=1509460469
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
@@ -161,112 +162,76 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/ovn-sb.ovsschema
 /usr/share/openvswitch/python/ovs/__init__.py
 /usr/share/openvswitch/python/ovs/__init__.pyc
-/usr/share/openvswitch/python/ovs/__init__.pyo
 /usr/share/openvswitch/python/ovs/daemon.py
 /usr/share/openvswitch/python/ovs/daemon.pyc
-/usr/share/openvswitch/python/ovs/daemon.pyo
 /usr/share/openvswitch/python/ovs/db/__init__.py
 /usr/share/openvswitch/python/ovs/db/__init__.pyc
-/usr/share/openvswitch/python/ovs/db/__init__.pyo
 /usr/share/openvswitch/python/ovs/db/data.py
 /usr/share/openvswitch/python/ovs/db/data.pyc
-/usr/share/openvswitch/python/ovs/db/data.pyo
 /usr/share/openvswitch/python/ovs/db/error.py
 /usr/share/openvswitch/python/ovs/db/error.pyc
-/usr/share/openvswitch/python/ovs/db/error.pyo
 /usr/share/openvswitch/python/ovs/db/idl.py
 /usr/share/openvswitch/python/ovs/db/idl.pyc
-/usr/share/openvswitch/python/ovs/db/idl.pyo
 /usr/share/openvswitch/python/ovs/db/parser.py
 /usr/share/openvswitch/python/ovs/db/parser.pyc
-/usr/share/openvswitch/python/ovs/db/parser.pyo
 /usr/share/openvswitch/python/ovs/db/schema.py
 /usr/share/openvswitch/python/ovs/db/schema.pyc
-/usr/share/openvswitch/python/ovs/db/schema.pyo
 /usr/share/openvswitch/python/ovs/db/types.py
 /usr/share/openvswitch/python/ovs/db/types.pyc
-/usr/share/openvswitch/python/ovs/db/types.pyo
 /usr/share/openvswitch/python/ovs/dirs.py
 /usr/share/openvswitch/python/ovs/dirs.pyc
-/usr/share/openvswitch/python/ovs/dirs.pyo
 /usr/share/openvswitch/python/ovs/fatal_signal.py
 /usr/share/openvswitch/python/ovs/fatal_signal.pyc
-/usr/share/openvswitch/python/ovs/fatal_signal.pyo
 /usr/share/openvswitch/python/ovs/fcntl_win.py
 /usr/share/openvswitch/python/ovs/fcntl_win.pyc
-/usr/share/openvswitch/python/ovs/fcntl_win.pyo
 /usr/share/openvswitch/python/ovs/json.py
 /usr/share/openvswitch/python/ovs/json.pyc
-/usr/share/openvswitch/python/ovs/json.pyo
 /usr/share/openvswitch/python/ovs/jsonrpc.py
 /usr/share/openvswitch/python/ovs/jsonrpc.pyc
-/usr/share/openvswitch/python/ovs/jsonrpc.pyo
 /usr/share/openvswitch/python/ovs/ovsuuid.py
 /usr/share/openvswitch/python/ovs/ovsuuid.pyc
-/usr/share/openvswitch/python/ovs/ovsuuid.pyo
 /usr/share/openvswitch/python/ovs/poller.py
 /usr/share/openvswitch/python/ovs/poller.pyc
-/usr/share/openvswitch/python/ovs/poller.pyo
 /usr/share/openvswitch/python/ovs/process.py
 /usr/share/openvswitch/python/ovs/process.pyc
-/usr/share/openvswitch/python/ovs/process.pyo
 /usr/share/openvswitch/python/ovs/reconnect.py
 /usr/share/openvswitch/python/ovs/reconnect.pyc
-/usr/share/openvswitch/python/ovs/reconnect.pyo
 /usr/share/openvswitch/python/ovs/socket_util.py
 /usr/share/openvswitch/python/ovs/socket_util.pyc
-/usr/share/openvswitch/python/ovs/socket_util.pyo
 /usr/share/openvswitch/python/ovs/stream.py
 /usr/share/openvswitch/python/ovs/stream.pyc
-/usr/share/openvswitch/python/ovs/stream.pyo
 /usr/share/openvswitch/python/ovs/timeval.py
 /usr/share/openvswitch/python/ovs/timeval.pyc
-/usr/share/openvswitch/python/ovs/timeval.pyo
 /usr/share/openvswitch/python/ovs/unixctl/__init__.py
 /usr/share/openvswitch/python/ovs/unixctl/__init__.pyc
-/usr/share/openvswitch/python/ovs/unixctl/__init__.pyo
 /usr/share/openvswitch/python/ovs/unixctl/client.py
 /usr/share/openvswitch/python/ovs/unixctl/client.pyc
-/usr/share/openvswitch/python/ovs/unixctl/client.pyo
 /usr/share/openvswitch/python/ovs/unixctl/server.py
 /usr/share/openvswitch/python/ovs/unixctl/server.pyc
-/usr/share/openvswitch/python/ovs/unixctl/server.pyo
 /usr/share/openvswitch/python/ovs/util.py
 /usr/share/openvswitch/python/ovs/util.pyc
-/usr/share/openvswitch/python/ovs/util.pyo
 /usr/share/openvswitch/python/ovs/version.py
 /usr/share/openvswitch/python/ovs/version.pyc
-/usr/share/openvswitch/python/ovs/version.pyo
 /usr/share/openvswitch/python/ovs/vlog.py
 /usr/share/openvswitch/python/ovs/vlog.pyc
-/usr/share/openvswitch/python/ovs/vlog.pyo
 /usr/share/openvswitch/python/ovs/winutils.py
 /usr/share/openvswitch/python/ovs/winutils.pyc
-/usr/share/openvswitch/python/ovs/winutils.pyo
 /usr/share/openvswitch/python/ovstest/__init__.py
 /usr/share/openvswitch/python/ovstest/__init__.pyc
-/usr/share/openvswitch/python/ovstest/__init__.pyo
 /usr/share/openvswitch/python/ovstest/args.py
 /usr/share/openvswitch/python/ovstest/args.pyc
-/usr/share/openvswitch/python/ovstest/args.pyo
 /usr/share/openvswitch/python/ovstest/rpcserver.py
 /usr/share/openvswitch/python/ovstest/rpcserver.pyc
-/usr/share/openvswitch/python/ovstest/rpcserver.pyo
 /usr/share/openvswitch/python/ovstest/tcp.py
 /usr/share/openvswitch/python/ovstest/tcp.pyc
-/usr/share/openvswitch/python/ovstest/tcp.pyo
 /usr/share/openvswitch/python/ovstest/tests.py
 /usr/share/openvswitch/python/ovstest/tests.pyc
-/usr/share/openvswitch/python/ovstest/tests.pyo
 /usr/share/openvswitch/python/ovstest/udp.py
 /usr/share/openvswitch/python/ovstest/udp.pyc
-/usr/share/openvswitch/python/ovstest/udp.pyo
 /usr/share/openvswitch/python/ovstest/util.py
 /usr/share/openvswitch/python/ovstest/util.pyc
-/usr/share/openvswitch/python/ovstest/util.pyo
 /usr/share/openvswitch/python/ovstest/vswitch.py
 /usr/share/openvswitch/python/ovstest/vswitch.pyc
-/usr/share/openvswitch/python/ovstest/vswitch.pyo
 /usr/share/openvswitch/scripts/ovn-bugtool-nbctl-show
 /usr/share/openvswitch/scripts/ovn-bugtool-sbctl-lflow-list
 /usr/share/openvswitch/scripts/ovn-bugtool-sbctl-show

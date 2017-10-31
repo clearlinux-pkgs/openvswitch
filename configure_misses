@@ -2,6 +2,8 @@ Configure miss: vmware.h usability
 Configure miss: vmware.h presence
 Configure miss: vmware.h
 Configure miss: MSVC x64 compiler
+Configure miss: flake8
+Configure miss: sphinx
 Configure miss: dot
 Configure miss: whether strtok_r macro segfaults on some inputs
 Configure miss: struct stat.st_mtimensec
