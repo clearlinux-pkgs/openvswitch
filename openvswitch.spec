@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.8.1
-Release  : 37
+Release  : 38
 URL      : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source1  : openvswitch.service
