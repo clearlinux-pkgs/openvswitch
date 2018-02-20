@@ -82,3 +82,6 @@
 /usr/share/openvswitch/python/ovstest/udp.py
 /usr/share/openvswitch/python/ovstest/util.py
 /usr/share/openvswitch/python/ovstest/vswitch.py
+/usr/share/openvswitch/scripts/ovs-vtep
+/usr/share/openvswitch/scripts/ovs-check-dead-ifs
+

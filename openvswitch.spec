@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.8.1
-Release  : 43
+Release  : 44
 URL      : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source1  : openvswitch.service
@@ -103,7 +103,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1519143226
+export SOURCE_DATE_EPOCH=1519143459
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
 export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
@@ -113,7 +113,7 @@ export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1519143226
+export SOURCE_DATE_EPOCH=1519143459
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
@@ -234,6 +234,8 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 %exclude /usr/share/openvswitch/python/ovstest/udp.py
 %exclude /usr/share/openvswitch/python/ovstest/util.py
 %exclude /usr/share/openvswitch/python/ovstest/vswitch.py
+%exclude /usr/share/openvswitch/scripts/ovs-check-dead-ifs
+%exclude /usr/share/openvswitch/scripts/ovs-vtep
 /usr/share/openvswitch/bugtool-plugins/kernel-info/openvswitch.xml
 /usr/share/openvswitch/bugtool-plugins/network-status/openvswitch.xml
 /usr/share/openvswitch/bugtool-plugins/network-status/ovn.xml
@@ -263,11 +265,9 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/scripts/ovs-bugtool-ovsdb-dump
 /usr/share/openvswitch/scripts/ovs-bugtool-tc-class-show
 /usr/share/openvswitch/scripts/ovs-bugtool-vsctl-show
-/usr/share/openvswitch/scripts/ovs-check-dead-ifs
 /usr/share/openvswitch/scripts/ovs-ctl
 /usr/share/openvswitch/scripts/ovs-lib
 /usr/share/openvswitch/scripts/ovs-save
-/usr/share/openvswitch/scripts/ovs-vtep
 /usr/share/openvswitch/vswitch.ovsschema
 /usr/share/openvswitch/vtep.ovsschema
 
@@ -418,3 +418,5 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/python/ovstest/udp.py
 /usr/share/openvswitch/python/ovstest/util.py
 /usr/share/openvswitch/python/ovstest/vswitch.py
+/usr/share/openvswitch/scripts/ovs-check-dead-ifs
+/usr/share/openvswitch/scripts/ovs-vtep
