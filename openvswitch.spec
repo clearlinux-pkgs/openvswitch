@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.8.1
-Release  : 46
+Release  : 47
 URL      : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source1  : openvswitch.service
@@ -102,17 +102,17 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1519399649
+export SOURCE_DATE_EPOCH=1526013909
 unset LD_AS_NEEDED
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
+export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 %reconfigure --disable-static PYTHON=/usr/bin/python2
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1519399649
+export SOURCE_DATE_EPOCH=1526013909
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
