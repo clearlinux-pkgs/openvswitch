@@ -28,7 +28,7 @@ BuildRequires : openssl-dev
 BuildRequires : pbr
 BuildRequires : pip
 BuildRequires : pkg-config-dev
-BuildRequires : python-dev
+
 BuildRequires : python3-dev
 BuildRequires : setuptools
 BuildRequires : six
