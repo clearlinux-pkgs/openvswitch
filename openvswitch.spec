@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.8.1
-Release  : 50
+Release  : 51
 URL      : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source0  : http://openvswitch.org/releases/openvswitch-2.8.1.tar.gz
 Source1  : openvswitch.service
@@ -13,10 +13,12 @@ Group    : Development/Tools
 License  : Apache-2.0 GPL-2.0 LGPL-2.1 LGPL-2.1+ SISSL
 Requires: openvswitch-bin
 Requires: openvswitch-config
-Requires: openvswitch-doc
+Requires: openvswitch-license
+Requires: openvswitch-man
 Requires: openvswitch-data
 BuildRequires : automake
 BuildRequires : automake-dev
+BuildRequires : buildreq-distutils3
 BuildRequires : gettext-bin
 BuildRequires : groff
 BuildRequires : libc-bin
@@ -25,14 +27,11 @@ BuildRequires : libtool
 BuildRequires : libtool-dev
 BuildRequires : m4
 BuildRequires : openssl-dev
-BuildRequires : pbr
-BuildRequires : pip
 BuildRequires : pkg-config-dev
-
 BuildRequires : python3-dev
-BuildRequires : setuptools
 BuildRequires : six
 BuildRequires : six-legacypython
+BuildRequires : valgrind
 Patch1: build.patch
 
 %description
@@ -45,6 +44,8 @@ Summary: bin components for the openvswitch package.
 Group: Binaries
 Requires: openvswitch-data
 Requires: openvswitch-config
+Requires: openvswitch-license
+Requires: openvswitch-man
 
 %description bin
 bin components for the openvswitch package.
@@ -80,6 +81,7 @@ dev components for the openvswitch package.
 %package doc
 Summary: doc components for the openvswitch package.
 Group: Documentation
+Requires: openvswitch-man
 
 %description doc
 doc components for the openvswitch package.
@@ -93,6 +95,22 @@ Group: Default
 extras components for the openvswitch package.
 
 
+%package license
+Summary: license components for the openvswitch package.
+Group: Default
+
+%description license
+license components for the openvswitch package.
+
+
+%package man
+Summary: man components for the openvswitch package.
+Group: Default
+
+%description man
+man components for the openvswitch package.
+
+
 %prep
 %setup -q -n openvswitch-2.8.1
 %patch1 -p1
@@ -102,7 +120,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526013909
+export SOURCE_DATE_EPOCH=1532467430
 unset LD_AS_NEEDED
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -112,8 +130,13 @@ export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=use
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1526013909
+export SOURCE_DATE_EPOCH=1532467430
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/openvswitch
+cp COPYING %{buildroot}/usr/share/doc/openvswitch/COPYING
+cp NOTICE %{buildroot}/usr/share/doc/openvswitch/NOTICE
+cp debian/copyright %{buildroot}/usr/share/doc/openvswitch/debian_copyright
+cp xenserver/LICENSE %{buildroot}/usr/share/doc/openvswitch/xenserver_LICENSE
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.service
@@ -162,33 +185,8 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 %files data
 %defattr(-,root,root,-)
 %exclude /usr/share/openvswitch/python/ovs/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/__init__.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/daemon.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/dirs.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/fatal_signal.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/fcntl_win.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/json.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/jsonrpc.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/ovsuuid.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/poller.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/process.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/reconnect.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/socket_util.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/stream.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/timeval.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/util.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/version.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/vlog.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/__pycache__/winutils.cpython-36.pyc
 %exclude /usr/share/openvswitch/python/ovs/daemon.py
 %exclude /usr/share/openvswitch/python/ovs/db/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/__init__.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/data.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/error.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/idl.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/parser.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/schema.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/db/__pycache__/types.cpython-36.pyc
 %exclude /usr/share/openvswitch/python/ovs/db/data.py
 %exclude /usr/share/openvswitch/python/ovs/db/error.py
 %exclude /usr/share/openvswitch/python/ovs/db/idl.py
@@ -208,9 +206,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 %exclude /usr/share/openvswitch/python/ovs/stream.py
 %exclude /usr/share/openvswitch/python/ovs/timeval.py
 %exclude /usr/share/openvswitch/python/ovs/unixctl/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/unixctl/__pycache__/__init__.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/unixctl/__pycache__/client.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovs/unixctl/__pycache__/server.cpython-36.pyc
 %exclude /usr/share/openvswitch/python/ovs/unixctl/client.py
 %exclude /usr/share/openvswitch/python/ovs/unixctl/server.py
 %exclude /usr/share/openvswitch/python/ovs/util.py
@@ -218,14 +213,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 %exclude /usr/share/openvswitch/python/ovs/vlog.py
 %exclude /usr/share/openvswitch/python/ovs/winutils.py
 %exclude /usr/share/openvswitch/python/ovstest/__init__.py
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/__init__.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/args.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/rpcserver.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/tcp.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/tests.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/udp.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/util.cpython-36.pyc
-%exclude /usr/share/openvswitch/python/ovstest/__pycache__/vswitch.cpython-36.pyc
 %exclude /usr/share/openvswitch/python/ovstest/args.py
 %exclude /usr/share/openvswitch/python/ovstest/rpcserver.py
 %exclude /usr/share/openvswitch/python/ovstest/tcp.py
@@ -325,11 +312,8 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/lib64/pkgconfig/libsflow.pc
 
 %files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
-%doc /usr/share/man/man5/*
-%doc /usr/share/man/man7/*
-%doc /usr/share/man/man8/*
+%defattr(0644,root,root,0755)
+%doc /usr/share/doc/openvswitch/*
 
 %files extras
 %defattr(-,root,root,-)
@@ -346,33 +330,8 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/bin/ovs-test
 /usr/bin/ovs-vlan-test
 /usr/share/openvswitch/python/ovs/__init__.py
-/usr/share/openvswitch/python/ovs/__pycache__/__init__.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/daemon.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/dirs.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/fatal_signal.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/fcntl_win.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/json.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/jsonrpc.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/ovsuuid.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/poller.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/process.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/reconnect.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/socket_util.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/stream.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/timeval.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/util.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/version.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/vlog.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/__pycache__/winutils.cpython-36.pyc
 /usr/share/openvswitch/python/ovs/daemon.py
 /usr/share/openvswitch/python/ovs/db/__init__.py
-/usr/share/openvswitch/python/ovs/db/__pycache__/__init__.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/data.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/error.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/idl.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/parser.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/schema.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/db/__pycache__/types.cpython-36.pyc
 /usr/share/openvswitch/python/ovs/db/data.py
 /usr/share/openvswitch/python/ovs/db/error.py
 /usr/share/openvswitch/python/ovs/db/idl.py
@@ -392,9 +351,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/python/ovs/stream.py
 /usr/share/openvswitch/python/ovs/timeval.py
 /usr/share/openvswitch/python/ovs/unixctl/__init__.py
-/usr/share/openvswitch/python/ovs/unixctl/__pycache__/__init__.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/unixctl/__pycache__/client.cpython-36.pyc
-/usr/share/openvswitch/python/ovs/unixctl/__pycache__/server.cpython-36.pyc
 /usr/share/openvswitch/python/ovs/unixctl/client.py
 /usr/share/openvswitch/python/ovs/unixctl/server.py
 /usr/share/openvswitch/python/ovs/util.py
@@ -402,14 +358,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/python/ovs/vlog.py
 /usr/share/openvswitch/python/ovs/winutils.py
 /usr/share/openvswitch/python/ovstest/__init__.py
-/usr/share/openvswitch/python/ovstest/__pycache__/__init__.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/args.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/rpcserver.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/tcp.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/tests.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/udp.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/util.cpython-36.pyc
-/usr/share/openvswitch/python/ovstest/__pycache__/vswitch.cpython-36.pyc
 /usr/share/openvswitch/python/ovstest/args.py
 /usr/share/openvswitch/python/ovstest/rpcserver.py
 /usr/share/openvswitch/python/ovstest/tcp.py
@@ -419,3 +367,45 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/python/ovstest/vswitch.py
 /usr/share/openvswitch/scripts/ovs-check-dead-ifs
 /usr/share/openvswitch/scripts/ovs-vtep
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/openvswitch/COPYING
+/usr/share/doc/openvswitch/xenserver_LICENSE
+
+%files man
+%defattr(-,root,root,-)
+/usr/share/man/man1/ovn-detrace.1
+/usr/share/man/man1/ovs-pcap.1
+/usr/share/man/man1/ovs-tcpundump.1
+/usr/share/man/man1/ovsdb-client.1
+/usr/share/man/man1/ovsdb-server.1
+/usr/share/man/man1/ovsdb-tool.1
+/usr/share/man/man5/ovn-nb.5
+/usr/share/man/man5/ovn-sb.5
+/usr/share/man/man5/ovs-vswitchd.conf.db.5
+/usr/share/man/man5/vtep.5
+/usr/share/man/man7/ovn-architecture.7
+/usr/share/man/man7/ovs-fields.7
+/usr/share/man/man8/ovn-controller-vtep.8
+/usr/share/man/man8/ovn-controller.8
+/usr/share/man/man8/ovn-ctl.8
+/usr/share/man/man8/ovn-nbctl.8
+/usr/share/man/man8/ovn-northd.8
+/usr/share/man/man8/ovn-sbctl.8
+/usr/share/man/man8/ovn-trace.8
+/usr/share/man/man8/ovs-appctl.8
+/usr/share/man/man8/ovs-bugtool.8
+/usr/share/man/man8/ovs-ctl.8
+/usr/share/man/man8/ovs-dpctl-top.8
+/usr/share/man/man8/ovs-dpctl.8
+/usr/share/man/man8/ovs-l3ping.8
+/usr/share/man/man8/ovs-ofctl.8
+/usr/share/man/man8/ovs-parse-backtrace.8
+/usr/share/man/man8/ovs-pki.8
+/usr/share/man/man8/ovs-tcpdump.8
+/usr/share/man/man8/ovs-testcontroller.8
+/usr/share/man/man8/ovs-vlan-bug-workaround.8
+/usr/share/man/man8/ovs-vsctl.8
+/usr/share/man/man8/ovs-vswitchd.8
+/usr/share/man/man8/vtep-ctl.8
