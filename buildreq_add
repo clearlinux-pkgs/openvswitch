@@ -7,4 +7,4 @@ graphviz
 libcap-ng-dev
 groff
 six
-six-legacypython
+deprecated-six-legacypython
