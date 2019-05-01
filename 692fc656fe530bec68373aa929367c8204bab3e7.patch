@@ -1,0 +1,32 @@
+commit 692fc656fe530bec68373aa929367c8204bab3e7
+Author: Toms Atteka <cpp.code.lv@gmail.com>
+Date:   Tue Feb 19 10:55:02 2019 -0800
+
+    netlink: added check to prevent netlink attribute overflow
+    
+    If enough large input is passed to odp_actions_from_string it can
+    cause netlink attribute to overflow.
+    Check for buffer size was added to prevent entering this function
+    and returning appropriate error code.
+    
+    Basic manual testing was performed.
+    
+    Reported-by: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=12231
+    Signed-off-by: Toms Atteka <cpp.code.lv@gmail.com>
+    Signed-off-by: Ben Pfaff <blp@ovn.org>
+
+diff --git a/lib/odp-util.c b/lib/odp-util.c
+index e893f46..e288ae8 100644
+--- a/lib/odp-util.c
++++ b/lib/odp-util.c
+@@ -2161,6 +2161,10 @@ parse_action_list(const char *s, const struct simap *port_names,
+         n += retval;
+     }
+ 
++    if (actions->size > UINT16_MAX) {
++        return -EFBIG;
++    }
++
+     return n;
+ }
+ 

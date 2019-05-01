@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.11.0
-Release  : 58
+Release  : 59
 URL      : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source1  : openvswitch.service
@@ -27,6 +27,8 @@ BuildRequires : python3-dev
 BuildRequires : six
 BuildRequires : sortedcontainers
 BuildRequires : valgrind
+Patch1: 692fc656fe530bec68373aa929367c8204bab3e7.patch
+Patch2: 8e738337a2c25c3d6ede2829d6ffd9af6bcd36a5.patch
 
 %description
 Open vSwitch provides standard network bridging functions augmented with
@@ -58,6 +60,7 @@ Group: Development
 Requires: openvswitch-bin = %{version}-%{release}
 Requires: openvswitch-data = %{version}-%{release}
 Provides: openvswitch-devel = %{version}-%{release}
+Requires: openvswitch = %{version}-%{release}
 
 %description dev
 dev components for the openvswitch package.
@@ -97,13 +100,15 @@ services components for the openvswitch package.
 
 %prep
 %setup -q -n openvswitch-2.11.0
+%patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554499966
+export SOURCE_DATE_EPOCH=1556741684
 unset LD_AS_NEEDED
 export LDFLAGS="${LDFLAGS} -fno-lto"
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -114,7 +119,7 @@ export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=use
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1554499966
+export SOURCE_DATE_EPOCH=1556741684
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
 cp LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/LICENSE
