@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.11.0
-Release  : 59
+Release  : 60
 URL      : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source1  : openvswitch.service
@@ -13,6 +13,7 @@ Group    : Development/Tools
 License  : Apache-2.0 GPL-2.0 LGPL-2.1 LGPL-2.1+ SISSL
 Requires: openvswitch-bin = %{version}-%{release}
 Requires: openvswitch-data = %{version}-%{release}
+Requires: openvswitch-lib = %{version}-%{release}
 Requires: openvswitch-license = %{version}-%{release}
 Requires: openvswitch-man = %{version}-%{release}
 Requires: openvswitch-services = %{version}-%{release}
@@ -26,6 +27,7 @@ BuildRequires : openssl-dev
 BuildRequires : python3-dev
 BuildRequires : six
 BuildRequires : sortedcontainers
+BuildRequires : util-linux
 BuildRequires : valgrind
 Patch1: 692fc656fe530bec68373aa929367c8204bab3e7.patch
 Patch2: 8e738337a2c25c3d6ede2829d6ffd9af6bcd36a5.patch
@@ -57,6 +59,7 @@ data components for the openvswitch package.
 %package dev
 Summary: dev components for the openvswitch package.
 Group: Development
+Requires: openvswitch-lib = %{version}-%{release}
 Requires: openvswitch-bin = %{version}-%{release}
 Requires: openvswitch-data = %{version}-%{release}
 Provides: openvswitch-devel = %{version}-%{release}
@@ -72,6 +75,16 @@ Group: Default
 
 %description extras
 extras components for the openvswitch package.
+
+
+%package lib
+Summary: lib components for the openvswitch package.
+Group: Libraries
+Requires: openvswitch-data = %{version}-%{release}
+Requires: openvswitch-license = %{version}-%{release}
+
+%description lib
+lib components for the openvswitch package.
 
 
 %package license
@@ -107,19 +120,19 @@ services components for the openvswitch package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556741684
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1566341494
 unset LD_AS_NEEDED
-export LDFLAGS="${LDFLAGS} -fno-lto"
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-%configure --disable-static
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+%configure --disable-static --enable-shared
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1556741684
+export SOURCE_DATE_EPOCH=1566341494
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
 cp LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/LICENSE
@@ -135,14 +148,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 
 %files bin
 %defattr(-,root,root,-)
-%exclude /usr/bin/ovn-detrace
-%exclude /usr/bin/ovn-docker-overlay-driver
-%exclude /usr/bin/ovn-docker-underlay-driver
-%exclude /usr/bin/ovs-docker
-%exclude /usr/bin/ovs-pcap
-%exclude /usr/bin/ovs-pki
-%exclude /usr/bin/ovs-tcpdump
-%exclude /usr/bin/ovs-tcpundump
 /usr/bin/ovn-controller
 /usr/bin/ovn-controller-vtep
 /usr/bin/ovn-nbctl
@@ -163,51 +168,6 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 
 %files data
 %defattr(-,root,root,-)
-%exclude /usr/share/openvswitch/python/ovs/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/compat/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/compat/sortedcontainers/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/compat/sortedcontainers/sorteddict.py
-%exclude /usr/share/openvswitch/python/ovs/compat/sortedcontainers/sortedlist.py
-%exclude /usr/share/openvswitch/python/ovs/compat/sortedcontainers/sortedset.py
-%exclude /usr/share/openvswitch/python/ovs/daemon.py
-%exclude /usr/share/openvswitch/python/ovs/db/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/db/custom_index.py
-%exclude /usr/share/openvswitch/python/ovs/db/data.py
-%exclude /usr/share/openvswitch/python/ovs/db/error.py
-%exclude /usr/share/openvswitch/python/ovs/db/idl.py
-%exclude /usr/share/openvswitch/python/ovs/db/parser.py
-%exclude /usr/share/openvswitch/python/ovs/db/schema.py
-%exclude /usr/share/openvswitch/python/ovs/db/types.py
-%exclude /usr/share/openvswitch/python/ovs/dirs.py
-%exclude /usr/share/openvswitch/python/ovs/fatal_signal.py
-%exclude /usr/share/openvswitch/python/ovs/fcntl_win.py
-%exclude /usr/share/openvswitch/python/ovs/json.py
-%exclude /usr/share/openvswitch/python/ovs/jsonrpc.py
-%exclude /usr/share/openvswitch/python/ovs/ovsuuid.py
-%exclude /usr/share/openvswitch/python/ovs/poller.py
-%exclude /usr/share/openvswitch/python/ovs/process.py
-%exclude /usr/share/openvswitch/python/ovs/reconnect.py
-%exclude /usr/share/openvswitch/python/ovs/socket_util.py
-%exclude /usr/share/openvswitch/python/ovs/stream.py
-%exclude /usr/share/openvswitch/python/ovs/timeval.py
-%exclude /usr/share/openvswitch/python/ovs/unixctl/__init__.py
-%exclude /usr/share/openvswitch/python/ovs/unixctl/client.py
-%exclude /usr/share/openvswitch/python/ovs/unixctl/server.py
-%exclude /usr/share/openvswitch/python/ovs/util.py
-%exclude /usr/share/openvswitch/python/ovs/version.py
-%exclude /usr/share/openvswitch/python/ovs/vlog.py
-%exclude /usr/share/openvswitch/python/ovs/winutils.py
-%exclude /usr/share/openvswitch/python/ovstest/__init__.py
-%exclude /usr/share/openvswitch/python/ovstest/args.py
-%exclude /usr/share/openvswitch/python/ovstest/rpcserver.py
-%exclude /usr/share/openvswitch/python/ovstest/tcp.py
-%exclude /usr/share/openvswitch/python/ovstest/tests.py
-%exclude /usr/share/openvswitch/python/ovstest/udp.py
-%exclude /usr/share/openvswitch/python/ovstest/util.py
-%exclude /usr/share/openvswitch/python/ovstest/vswitch.py
-%exclude /usr/share/openvswitch/scripts/ovs-check-dead-ifs
-%exclude /usr/share/openvswitch/scripts/ovs-monitor-ipsec
-%exclude /usr/share/openvswitch/scripts/ovs-vtep
 /usr/share/openvswitch/ovn-nb.ovsschema
 /usr/share/openvswitch/ovn-sb.ovsschema
 /usr/share/openvswitch/scripts/ovn-ctl
@@ -285,6 +245,12 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/include/ovn/actions.h
 /usr/include/ovn/expr.h
 /usr/include/ovn/lex.h
+/usr/lib64/libofproto.so
+/usr/lib64/libopenvswitch.so
+/usr/lib64/libovn.so
+/usr/lib64/libovsdb.so
+/usr/lib64/libsflow.so
+/usr/lib64/libvtep.so
 /usr/lib64/pkgconfig/libofproto.pc
 /usr/lib64/pkgconfig/libopenvswitch.pc
 /usr/lib64/pkgconfig/libovsdb.pc
@@ -345,6 +311,21 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/scripts/ovs-check-dead-ifs
 /usr/share/openvswitch/scripts/ovs-monitor-ipsec
 /usr/share/openvswitch/scripts/ovs-vtep
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libofproto-2.11.so.0
+/usr/lib64/libofproto-2.11.so.0.0.0
+/usr/lib64/libopenvswitch-2.11.so.0
+/usr/lib64/libopenvswitch-2.11.so.0.0.0
+/usr/lib64/libovn-2.11.so.0
+/usr/lib64/libovn-2.11.so.0.0.0
+/usr/lib64/libovsdb-2.11.so.0
+/usr/lib64/libovsdb-2.11.so.0.0.0
+/usr/lib64/libsflow-2.11.so.0
+/usr/lib64/libsflow-2.11.so.0.0.0
+/usr/lib64/libvtep-2.11.so.0
+/usr/lib64/libvtep-2.11.so.0.0.0
 
 %files license
 %defattr(0644,root,root,0755)

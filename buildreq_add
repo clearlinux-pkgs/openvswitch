@@ -6,3 +6,4 @@ graphviz
 libcap-ng-dev
 groff
 six
+util-linux
