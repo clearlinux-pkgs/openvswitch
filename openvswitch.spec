@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.11.0
-Release  : 60
+Release  : 61
 URL      : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.11.0.tar.gz
 Source1  : openvswitch.service
@@ -31,6 +31,7 @@ BuildRequires : util-linux
 BuildRequires : valgrind
 Patch1: 692fc656fe530bec68373aa929367c8204bab3e7.patch
 Patch2: 8e738337a2c25c3d6ede2829d6ffd9af6bcd36a5.patch
+Patch3: d84109f0b60096ce71cd0537b31b69a7f5ea8756.patch
 
 %description
 Open vSwitch provides standard network bridging functions augmented with
@@ -113,15 +114,17 @@ services components for the openvswitch package.
 
 %prep
 %setup -q -n openvswitch-2.11.0
+cd %{_builddir}/openvswitch-2.11.0
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1566341494
+export SOURCE_DATE_EPOCH=1576012281
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -132,13 +135,13 @@ export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1566341494
+export SOURCE_DATE_EPOCH=1576012281
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
-cp LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/LICENSE
-cp NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/NOTICE
-cp python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/python_ovs_compat_sortedcontainers_LICENSE
-cp xenserver/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/xenserver_LICENSE
+cp %{_builddir}/openvswitch-2.11.0/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
+cp %{_builddir}/openvswitch-2.11.0/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
+cp %{_builddir}/openvswitch-2.11.0/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/ee81d5397d3a4acb8dad31831c9ce7e25753b029
+cp %{_builddir}/openvswitch-2.11.0/xenserver/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.service
@@ -329,10 +332,10 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/openvswitch/LICENSE
-/usr/share/package-licenses/openvswitch/NOTICE
-/usr/share/package-licenses/openvswitch/python_ovs_compat_sortedcontainers_LICENSE
-/usr/share/package-licenses/openvswitch/xenserver_LICENSE
+/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
+/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5
+/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
+/usr/share/package-licenses/openvswitch/ee81d5397d3a4acb8dad31831c9ce7e25753b029
 
 %files man
 %defattr(0644,root,root,0755)
