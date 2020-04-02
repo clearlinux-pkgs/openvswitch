@@ -1,19 +1,18 @@
-Configure miss: vmware.h usability
-Configure miss: vmware.h presence
-Configure miss: vmware.h
 Configure miss: MSVC x64 compiler
-Configure miss: Python 2.x for x >= 7
-Configure miss: flake8
+Configure miss: sphinx-build-3
+Configure miss: sphinx-build-2
 Configure miss: dot
 Configure miss: whether strtok_r macro segfaults on some inputs
+Configure miss: whether AF_XDP is enabled
 Configure miss: struct ifreq.ifr_flagshigh
 Configure miss: net/if_mib.h
 Configure miss: connect in -lsocket
 Configure miss: XenServer release
 Configure miss: pthread_set_name_np
 Configure miss: ub_ctx_create in -lunbound
+Configure miss: unw_backtrace in -lunwind
 Configure miss: whether gcc accepts -Wthread-safety
 Configure miss: whether gcc accepts -Qunused-arguments
 Configure miss: whether gcc accepts -Wno-null-pointer-arithmetic
 Configure miss: whether gcc accepts -Warray-bounds-pointer-arithmetic
-Configure miss: whether dpdk datapath is enabled
+Configure miss: whether dpdk is enabled
