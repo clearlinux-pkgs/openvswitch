@@ -2269,6 +2269,7 @@ libopenvswitch-2.13.so.0:ofputil_version_to_string
 libopenvswitch-2.13.so.0:ofputil_versions_from_string
 libopenvswitch-2.13.so.0:ofputil_versions_from_strings
 libopenvswitch-2.13.so.0:ofputil_wildcard_from_ofpfw10
+libopenvswitch-2.13.so.0:or_bytes
 libopenvswitch-2.13.so.0:out_of_memory
 libopenvswitch-2.13.so.0:ovs_abort
 libopenvswitch-2.13.so.0:ovs_abort_valist
