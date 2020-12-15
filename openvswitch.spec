@@ -4,7 +4,7 @@
 #
 Name     : openvswitch
 Version  : 2.13.1
-Release  : 65
+Release  : 66
 URL      : https://www.openvswitch.org/releases/openvswitch-2.13.1.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.13.1.tar.gz
 Source1  : openvswitch.service
