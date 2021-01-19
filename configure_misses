@@ -15,4 +15,5 @@ Configure miss: whether gcc accepts -Wthread-safety
 Configure miss: whether gcc accepts -Qunused-arguments
 Configure miss: whether gcc accepts -Wno-null-pointer-arithmetic
 Configure miss: whether gcc accepts -Warray-bounds-pointer-arithmetic
+Configure miss: whether DPCLS Autovalidator is default implementation
 Configure miss: whether dpdk is enabled
