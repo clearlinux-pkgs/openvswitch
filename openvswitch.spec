@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openvswitch
 Version  : 2.14.2
-Release  : 69
+Release  : 70
 URL      : https://www.openvswitch.org/releases/openvswitch-2.14.2.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.14.2.tar.gz
 Source1  : openvswitch.service
@@ -119,10 +119,10 @@ export LANG=C.UTF-8
 export SOURCE_DATE_EPOCH=1613089722
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
 %configure
 make  %{?_smp_mflags}
 
