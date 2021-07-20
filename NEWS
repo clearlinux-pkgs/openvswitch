@@ -1,30 +1,77 @@
-v2.14.2 - 10 Feb 2021
+v2.15.1 - 01 Jul 2021
 ---------------------
    - Bug fixes
-   - Security:
-     * Fixed packet parsing vulnerability CVE-2020-35498.
+   - ovs-ctl:
+     * New option '--no-record-hostname' to disable hostname configuration
+       in ovsdb on startup.
+     * New command 'record-hostname-if-not-set' to update hostname in ovsdb.
+   - DPDK:
+     * OVS validated with DPDK 20.11.1. It is recommended to use this version
+       until further releases.
 
-v2.14.1 - 13 Jan 2021
+
+v2.15.0 - 15 Feb 2021
 ---------------------
-   - Bug fixes
-   - LLDP:
-     * Security fixes for CVE-2015-8011 and CVE-2020-27827.
-   - IPsec:
-     * Fixed support of strongswan 5.7+ in ovs-monitor-ipsec.
-     * Add option '--no-cleanup' to allow ovs-monitor-ipsec to stop without
-       tearing down IPsec tunnels.
-     * Add option '--no-restart-ike-daemon' to allow ovs-monitor-ipsec to start
-       without restarting ipsec daemon.
    - OVSDB:
+     * Changed format in which ovsdb transactions are stored in database files.
+       Now each transaction contains diff of data instead of the whole new
+       value of a column.
+       New ovsdb-server process will be able to read old database format, but
+       old processes will *fail* to read database created by the new one.
+       For cluster and active-backup service models follow upgrade instructions
+       in 'Upgrading from version 2.14 and earlier to 2.15 and later' section
+       of ovsdb(7).
+     * New unixctl command 'ovsdb-server/get-db-storage-status' to show the
+       status of the storage that's backing a database.
      * New unixctl command 'ovsdb-server/memory-trim-on-compaction on|off'.
        If turned on, ovsdb-server will try to reclaim all the unused memory
        after every DB compaction back to OS.  Disabled by default.
      * Maximum backlog on RAFT connections limited to 500 messages or 4GB.
        Once threshold reached, connection is dropped (and re-established).
        Use the 'cluster/set-backlog-threshold' command to change limits.
-     * Fixed SHA-1 hash computation for databases larger than 512 MB.
    - DPDK:
-     * Fixed support of 'net_virtio' devices.
+     * Removed support for vhost-user dequeue zero-copy.
+     * Add support for DPDK 20.11.
+   - Userspace datapath:
+     * Add the 'pmd' option to "ovs-appctl dpctl/dump-flows", which
+       restricts a flow dump to a single PMD thread if set.
+     * New 'options:dpdk-vf-mac' field for DPDK interface of VF ports,
+       that allows configuring the MAC address of a VF representor.
+     * Add generic IP protocol support to conntrack. With this change, all
+       none UDP, TCP, and ICMP traffic will be treated as general L3
+       traffic, i.e. using 3 tupples.
+     * Add parameters 'pmd-auto-lb-load-threshold' and
+       'pmd-auto-lb-improvement-threshold' to configure PMD auto load balance
+       behaviour.
+   - The environment variable OVS_UNBOUND_CONF, if set, is now used
+     as the DNS resolver's (unbound) configuration file.
+   - Linux datapath:
+     * Support for kernel versions up to 5.8.x.
+   - Terminology:
+     * The terms "master" and "slave" have been replaced by "primary" and
+       "secondary", respectively, for OpenFlow connection roles.
+     * The term "slave" has been replaced by "member", for bonds, LACP, and
+       OpenFlow bundle actions.
+   - Support for GitHub Actions based continuous integration builds has been
+     added.
+   - Bareudp Tunnel
+     * Bareudp device support is present in linux kernel from version 5.7
+     * Kernel bareudp device is not backported to ovs tree.
+     * Userspace datapath support is not added
+   - ovs-dpctl and 'ovs-appctl dpctl/':
+     * New commands '{add,mod,del}-flows' where added, which allow adding,
+       deleting, or modifying flows based on information read from a file.
+   - IPsec:
+     * Add option '--no-cleanup' to allow ovs-monitor-ipsec to stop without
+       tearing down IPsec tunnels.
+     * Add option '--no-restart-ike-daemon' to allow ovs-monitor-ipsec to start
+       without restarting ipsec daemon.
+   - Building the Linux kernel module from the OVS source tree is deprecated
+     * Support for the Linux kernel is capped at version 5.8
+     * Only bug fixes for the Linux OOT kernel module will be accepted.
+     * The Linux kernel module will be fully removed from the OVS source tree
+       in OVS branch 2.18
+
 
 v2.14.0 - 17 Aug 2020
 ---------------------
@@ -845,7 +892,7 @@ v2.4.0 - 20 Aug 2015
      The implementation has been tested successfully against the Ixia Automated
      Network Validation Library (ANVL).
    - Stats are no longer updated on fake bond interface.
-   - Keep active bond slave selection across OVS restart.
+   - Keep active bond interface selection across OVS restart.
    - A simple wrapper script, 'ovs-docker', to integrate OVS with Docker
      containers. If and when there is a native integration of Open vSwitch
      with Docker, the wrapper script will be retired.
