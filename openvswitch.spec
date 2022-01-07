@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openvswitch
 Version  : 2.16.0
-Release  : 72
+Release  : 73
 URL      : https://www.openvswitch.org/releases/openvswitch-2.16.0.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.16.0.tar.gz
 Source1  : openvswitch.service
@@ -17,16 +17,16 @@ Requires: openvswitch-data = %{version}-%{release}
 Requires: openvswitch-license = %{version}-%{release}
 Requires: openvswitch-man = %{version}-%{release}
 Requires: openvswitch-services = %{version}-%{release}
-Requires: sortedcontainers
 BuildRequires : Sphinx
 BuildRequires : buildreq-distutils3
 BuildRequires : groff
 BuildRequires : libc-bin
 BuildRequires : libcap-ng-dev
 BuildRequires : openssl-dev
+BuildRequires : pypi(six)
+BuildRequires : pypi(sortedcontainers)
+BuildRequires : pypi(sphinx)
 BuildRequires : python3-dev
-BuildRequires : six
-BuildRequires : sortedcontainers
 BuildRequires : util-linux
 BuildRequires : valgrind
 
@@ -116,7 +116,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1629501867
+export SOURCE_DATE_EPOCH=1641592583
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
@@ -127,7 +127,7 @@ export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-re
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1629501867
+export SOURCE_DATE_EPOCH=1641592583
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
 cp %{_builddir}/openvswitch-2.16.0/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007

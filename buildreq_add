@@ -5,5 +5,5 @@ python3-dev
 graphviz
 libcap-ng-dev
 groff
-six
+pypi(six)
 util-linux
