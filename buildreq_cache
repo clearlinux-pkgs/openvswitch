@@ -1,6 +1,5 @@
 2.16.0
-Sphinx
 openssl-dev
-pypi(ovs_sphinx_theme)
 pypi(sphinx)
+pypi-sphinx
 valgrind
