@@ -2,6 +2,7 @@ Configure miss: MSVC x64 compiler
 Configure miss: XenServer release
 Configure miss: connect in -lsocket
 Configure miss: dot
+Configure miss: flake8
 Configure miss: net/if_mib.h
 Configure miss: pthread_set_name_np
 Configure miss: sphinx-build-2
