@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : openvswitch
-Version  : 2.16.2
-Release  : 75
-URL      : https://www.openvswitch.org/releases/openvswitch-2.16.2.tar.gz
-Source0  : https://www.openvswitch.org/releases/openvswitch-2.16.2.tar.gz
+Version  : 2.17.0
+Release  : 76
+URL      : https://www.openvswitch.org/releases/openvswitch-2.17.0.tar.gz
+Source0  : https://www.openvswitch.org/releases/openvswitch-2.17.0.tar.gz
 Source1  : openvswitch.service
 Summary  : Open vSwitch daemon/database/utilities
 Group    : Development/Tools
@@ -108,15 +108,15 @@ staticdev components for the openvswitch package.
 
 
 %prep
-%setup -q -n openvswitch-2.16.2
-cd %{_builddir}/openvswitch-2.16.2
+%setup -q -n openvswitch-2.17.0
+cd %{_builddir}/openvswitch-2.17.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1644452489
+export SOURCE_DATE_EPOCH=1645746612
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-regs=used "
@@ -127,14 +127,14 @@ export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -fzero-call-used-re
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1644452489
+export SOURCE_DATE_EPOCH=1645746612
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
-cp %{_builddir}/openvswitch-2.16.2/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
-cp %{_builddir}/openvswitch-2.16.2/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
-cp %{_builddir}/openvswitch-2.16.2/debian/copyright %{buildroot}/usr/share/package-licenses/openvswitch/21e4c8ae832f888e0ee6b6daa926392867922c5b
-cp %{_builddir}/openvswitch-2.16.2/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6
-cp %{_builddir}/openvswitch-2.16.2/xenserver/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5
+cp %{_builddir}/openvswitch-2.17.0/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
+cp %{_builddir}/openvswitch-2.17.0/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
+cp %{_builddir}/openvswitch-2.17.0/debian/copyright %{buildroot}/usr/share/package-licenses/openvswitch/21e4c8ae832f888e0ee6b6daa926392867922c5b
+cp %{_builddir}/openvswitch-2.17.0/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6
+cp %{_builddir}/openvswitch-2.17.0/xenserver/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.service
@@ -242,6 +242,7 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/include/openvswitch/tun-metadata.h
 /usr/include/openvswitch/type-props.h
 /usr/include/openvswitch/types.h
+/usr/include/openvswitch/usdt-probes.h
 /usr/include/openvswitch/util.h
 /usr/include/openvswitch/uuid.h
 /usr/include/openvswitch/vconn.h
