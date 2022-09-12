@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : openvswitch
 Version  : 2.17.2
-Release  : 78
+Release  : 79
 URL      : https://www.openvswitch.org/releases/openvswitch-2.17.2.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-2.17.2.tar.gz
 Source1  : openvswitch.service
