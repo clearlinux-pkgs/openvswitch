@@ -1,13 +1,41 @@
-v2.17.2 - 15 Jun 2022
----------------------
+v3.0.3 - 20 Dec 2022
+--------------------
+   - Bug fixes
+   - Security:
+     * Fixed LLDP underflow issue while parsing malformed Auto Attach TLVs.
+       The original patch is available here:
+       https://mail.openvswitch.org/pipermail/ovs-dev/2022-December/400596.html
+
+v3.0.2 - 01 Dec 2022
+--------------------
+   - Bug fixes
+   - QoS:
+     * Fixed inability to apply QoS on ports with custom qdiscs.
+
+v3.0.1 - 07 Oct 2022
+--------------------
    - Bug fixes
    - DPDK:
-     * OVS validated with DPDK 21.11.1.  It is recommended to use this version
-       until further releases.
+     * OVS validated with DPDK 21.11.2.
+       DPDK 21.11.2 contains fixes for the following CVEs:
+       CVE-2022-28199 cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-28199
+       CVE-2022-2132 cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-2132
+       A bug was introduced in DPDK 21.11.1 by the commit
+       01e3dee29c02 ("vhost: fix unsafe vring addresses modifications").
+       This bug can cause a deadlock when vIOMMU is enabled and NUMA
+       reallocation of the virtqueues happen.
+       A fix has been posted and pushed to the DPDK 21.11 branch.
+       It can be found here:
+       https://patches.dpdk.org/project/dpdk/patch/20220725203206.427083-2-david.marchand@redhat.com/.
+       If a user wishes to avoid the issue then it is recommended to use
+       DPDK 21.11.0 until the release of DPDK 21.11.3.
+       It should be noted that DPDK 21.11.0 does not benefit from the numerous
+       bug and CVE fixes addressed since its release.
+       If a user wishes to benefit from these fixes it is recommended to use
+       DPDK 21.11.2.
 
-v2.17.1 - 08 Apr 2022
----------------------
-   - Bug fixes
+v3.0.0 - 15 Aug 2022
+--------------------
    - libopenvswitch API change:
      * To fix the Undefined Behavior issue causing the compiler to incorrectly
        optimize important parts of code, container iteration macros (e.g.,
@@ -19,6 +47,80 @@ v2.17.1 - 08 Apr 2022
        macros before compiling with a new version.
      * Since the change is limited to the definitions within the headers, the
        ABI is not affected.
+   - OVSDB:
+     * 'relay' service model now supports transaction history, i.e. honors the
+       'last-txn-id' field in 'monitor_cond_since' requests from clients.
+     * New unixctl command 'ovsdb-server/tlog-set DB:TABLE on|off".
+       If turned on, ovsdb-server will log (at level INFO and rate limited)
+       all operations that are committed to table TABLE in the DB database.
+     * New Local_Config schema added to support Connections (--remote)
+       configuration in a clustered databse independently for each server.
+       E.g. for listening on unique addresses.  See the ovsdb.local-config.5
+       manpage for schema details.
+     * Returning unused memory to the OS after the database compaction is now
+       enabled by default.  Use 'ovsdb-server/memory-trim-on-compaction off'
+       unixctl command to disable.
+     * Most of the work for the automatic database compaction in clustered
+       mode has been moved to a separate thread to avoid blocking the process.
+   - OVSDB-IDL:
+     * New monitor mode flag, OVSDB_IDL_WRITE_CHANGED_ONLY, allowing
+       applications to relax atomicity requirements when dealing with
+       columns whose value has been rewritten (but not changed).
+   - OpenFlow:
+     * Extended Flow Monitoring support for all supported OpenFlow versions:
+         OpenFlow versions 1.0-1.2 with Nicira Extensions
+         OpenFlow versions 1.3 with Open Network Foundation extension
+         OpenFlow versions 1.4+, as defined in the OpenFlow specification
+   - Python:
+     * Added a new flow parsing library ovs.flow capable of parsing
+       both OpenFlow and datapath flows.
+   - IPsec:
+     * Added support for custom per-tunnel options via 'options:ipsec_*' knobs.
+       See Documentation/tutorials/ipsec.rst for details.
+   - Windows:
+     * Conntrack support for TCPv6, UDPv6, ICMPv6, FTPv6.
+     * IPv6 Geneve tunnel support.
+   - DPDK:
+     * OVS validated with DPDK 21.11.1.  It is recommended to use this version
+       until further releases.
+     * Delay creating or reusing a mempool for vhost ports until the VM
+       is started. A failure to create a mempool will now be logged only
+       when the VM is started.
+     * New configuration knob 'other_config:shared-mempool-config' to set MTU
+       that shared mempool mbuf size is based on. This allows interfaces with
+       different MTU sizes to share mempools.
+   - Userspace datapath:
+     * Improved multi-thread scalability of the userspace connection tracking.
+     * 'dpif-netdev/subtable-lookup-prio-get' appctl command renamed to
+       'dpif-netdev/subtable-lookup-info-get' to better reflect its purpose.
+       The old variant is kept for backward compatibility.
+     * Add actions auto-validator function to compare different actions
+       implementations against default implementation.
+     * Add command line option to switch between different actions
+       implementations available at run time.
+     * Add build time configure command to enable auto-validator as default
+       actions implementation at build time.
+     * Add AVX512 implementation of actions.
+   - Debian packaging updated to be on par with package source in Debian/Ubuntu.
+     * Provided an openvswitch-switch-dpdk package that integrates with the
+       dpdk package in the distributions so that end users can opt into a
+       DPDK-enabled Open vSwitch binary.
+     * Provided systemd service files.
+     * Provided openvswitch-source package for reproducible integrated build of
+       for example OVN.
+     * Shared library and subsequently libopenvswitch and libopenvswitch-dev
+       binary packages are no longer built.
+   - Linux TC offload:
+     * Add support for offloading meters via tc police.
+     * Add support for offloading the check_pkt_len action.
+   - New configuration knob 'other_config:all-members-active' for
+     balance-slb bonds.
+   - Previously deprecated Linux kernel module is now fully removed from
+     the OVS source tree.  The version provided with the Linux kernel
+     should be used instead.
+   - XenServer: Support for integration with XenServer has been removed due to
+     lack of maintenance and bitrot.
+
 
 v2.17.0 - 17 Feb 2022
 ---------------------

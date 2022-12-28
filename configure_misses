@@ -1,5 +1,4 @@
 Configure miss: MSVC x64 compiler
-Configure miss: XenServer release
 Configure miss: connect in -lsocket
 Configure miss: dot
 Configure miss: flake8
@@ -15,6 +14,7 @@ Configure miss: whether DPCLS Autovalidator is default implementation
 Configure miss: whether DPIF AVX512 is default implementation
 Configure miss: whether MFEX Autovalidator is default implementation
 Configure miss: whether USDT probes are enabled
+Configure miss: whether actions Autovalidator is default implementation
 Configure miss: whether dpdk is enabled
 Configure miss: whether gcc accepts -Qunused-arguments
 Configure miss: whether gcc accepts -Warray-bounds-pointer-arithmetic

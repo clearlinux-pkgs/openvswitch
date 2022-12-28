@@ -4,14 +4,14 @@
 #
 %define keepstatic 1
 Name     : openvswitch
-Version  : 2.17.2
-Release  : 80
-URL      : https://www.openvswitch.org/releases/openvswitch-2.17.2.tar.gz
-Source0  : https://www.openvswitch.org/releases/openvswitch-2.17.2.tar.gz
+Version  : 3.0.3
+Release  : 81
+URL      : https://www.openvswitch.org/releases/openvswitch-3.0.3.tar.gz
+Source0  : https://www.openvswitch.org/releases/openvswitch-3.0.3.tar.gz
 Source1  : openvswitch.service
-Summary  : Open vSwitch daemon/database/utilities
+Summary  : Open vSwitch
 Group    : Development/Tools
-License  : Apache-2.0 GPL-2.0 LGPL-2.0+ LGPL-2.1 SISSL
+License  : Apache-2.0 LGPL-2.0+ SISSL
 Requires: openvswitch-bin = %{version}-%{release}
 Requires: openvswitch-data = %{version}-%{release}
 Requires: openvswitch-license = %{version}-%{release}
@@ -31,7 +31,7 @@ BuildRequires : util-linux
 BuildRequires : valgrind
 
 %description
-Open vSwitch provides standard network bridging functions augmented with
+Open vSwitch provides standard network bridging functions and
 support for the OpenFlow protocol for remote per-flow control of
 traffic.
 
@@ -108,15 +108,15 @@ staticdev components for the openvswitch package.
 
 
 %prep
-%setup -q -n openvswitch-2.17.2
-cd %{_builddir}/openvswitch-2.17.2
+%setup -q -n openvswitch-3.0.3
+cd %{_builddir}/openvswitch-3.0.3
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1664918125
+export SOURCE_DATE_EPOCH=1672190097
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
@@ -127,14 +127,12 @@ export CXXFLAGS="$CXXFLAGS -fno-lto "
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1664918125
+export SOURCE_DATE_EPOCH=1672190097
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
-cp %{_builddir}/openvswitch-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007 || :
-cp %{_builddir}/openvswitch-%{version}/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453 || :
-cp %{_builddir}/openvswitch-%{version}/debian/copyright %{buildroot}/usr/share/package-licenses/openvswitch/21e4c8ae832f888e0ee6b6daa926392867922c5b || :
-cp %{_builddir}/openvswitch-%{version}/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6 || :
-cp %{_builddir}/openvswitch-%{version}/xenserver/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5 || :
+cp %{_builddir}/openvswitch-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
+cp %{_builddir}/openvswitch-%{version}/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
+cp %{_builddir}/openvswitch-%{version}/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.service
@@ -168,6 +166,17 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/bugtool-plugins/system-configuration.xml
 /usr/share/openvswitch/bugtool-plugins/system-configuration/openvswitch.xml
 /usr/share/openvswitch/bugtool-plugins/system-logs/openvswitch.xml
+/usr/share/openvswitch/local-config.ovsschema
+/usr/share/openvswitch/python/ovs/flow/__init__.py
+/usr/share/openvswitch/python/ovs/flow/decoders.py
+/usr/share/openvswitch/python/ovs/flow/filter.py
+/usr/share/openvswitch/python/ovs/flow/flow.py
+/usr/share/openvswitch/python/ovs/flow/kv.py
+/usr/share/openvswitch/python/ovs/flow/list.py
+/usr/share/openvswitch/python/ovs/flow/odp.py
+/usr/share/openvswitch/python/ovs/flow/ofp.py
+/usr/share/openvswitch/python/ovs/flow/ofp_act.py
+/usr/share/openvswitch/python/ovs/flow/ofp_fields.py
 /usr/share/openvswitch/scripts/ovs-bugtool-daemons-ver
 /usr/share/openvswitch/scripts/ovs-bugtool-fdb-show
 /usr/share/openvswitch/scripts/ovs-bugtool-get-dpdk-nic-numa
@@ -308,9 +317,7 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/openvswitch/21e4c8ae832f888e0ee6b6daa926392867922c5b
 /usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
-/usr/share/package-licenses/openvswitch/58540f918cf80a0242ee25c334f1ff40a7c3fca5
 /usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
 /usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6
 
@@ -324,6 +331,7 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/man/man5/ovs-vswitchd.conf.db.5
 /usr/share/man/man5/ovsdb-server.5
 /usr/share/man/man5/ovsdb.5
+/usr/share/man/man5/ovsdb.local-config.5
 /usr/share/man/man5/vtep.5
 /usr/share/man/man7/ovs-actions.7
 /usr/share/man/man7/ovs-fields.7
