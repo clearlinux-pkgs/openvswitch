@@ -1,4 +1,7 @@
 Configure miss: MSVC x64 compiler
+Configure miss: bpf/libbpf.h
+Configure miss: bpf/libbpf.h presence
+Configure miss: bpf/libbpf.h usability
 Configure miss: connect in -lsocket
 Configure miss: dot
 Configure miss: flake8
@@ -9,7 +12,6 @@ Configure miss: sphinx-build-3
 Configure miss: struct ifreq.ifr_flagshigh
 Configure miss: ub_ctx_create in -lunbound
 Configure miss: unw_backtrace in -lunwind
-Configure miss: whether AF_XDP is enabled
 Configure miss: whether DPCLS Autovalidator is default implementation
 Configure miss: whether DPIF AVX512 is default implementation
 Configure miss: whether MFEX Autovalidator is default implementation

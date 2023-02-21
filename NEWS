@@ -1,38 +1,48 @@
-v3.0.3 - 20 Dec 2022
+v3.1.0 - 16 Feb 2023
 --------------------
-   - Bug fixes
-   - Security:
-     * Fixed LLDP underflow issue while parsing malformed Auto Attach TLVs.
-       The original patch is available here:
-       https://mail.openvswitch.org/pipermail/ovs-dev/2022-December/400596.html
-
-v3.0.2 - 01 Dec 2022
---------------------
-   - Bug fixes
-   - QoS:
-     * Fixed inability to apply QoS on ports with custom qdiscs.
-
-v3.0.1 - 07 Oct 2022
---------------------
-   - Bug fixes
+   - ovs-vswitchd now detects changes in CPU affinity and adjusts the number
+     of handler and revalidator threads if necessary.
+   - AF_XDP:
+     * Added support for building with libxdp and libbpf >= 0.7.
+     * Support for AF_XDP is now enabled by default if all dependencies are
+       available at the build time.  Use --disable-afxdp to disable.
+       Use --enable-afxdp to fail the build if dependencies are not present.
+   - ovs-appctl:
+     * "ovs-appctl ofproto/trace" command can now display port names with the
+       "--names" option.
+   - OVSDB-IDL:
+     * Add the support to specify the persistent uuid for row insert in both
+       C and Python IDLs.
+   - Windows:
+     * Conntrack IPv6 fragment support.
    - DPDK:
-     * OVS validated with DPDK 21.11.2.
-       DPDK 21.11.2 contains fixes for the following CVEs:
-       CVE-2022-28199 cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-28199
-       CVE-2022-2132 cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-2132
-       A bug was introduced in DPDK 21.11.1 by the commit
-       01e3dee29c02 ("vhost: fix unsafe vring addresses modifications").
-       This bug can cause a deadlock when vIOMMU is enabled and NUMA
-       reallocation of the virtqueues happen.
-       A fix has been posted and pushed to the DPDK 21.11 branch.
-       It can be found here:
-       https://patches.dpdk.org/project/dpdk/patch/20220725203206.427083-2-david.marchand@redhat.com/.
-       If a user wishes to avoid the issue then it is recommended to use
-       DPDK 21.11.0 until the release of DPDK 21.11.3.
-       It should be noted that DPDK 21.11.0 does not benefit from the numerous
-       bug and CVE fixes addressed since its release.
-       If a user wishes to benefit from these fixes it is recommended to use
-       DPDK 21.11.2.
+     * Add support for DPDK 22.11.1.
+   - For the QoS max-rate and STP/RSTP path-cost configuration OVS now assumes
+     10 Gbps link speed by default in case the actual link speed cannot be
+     determined.  Previously it was 10 Mbps.  Values can still be overridden
+     by specifying 'max-rate' or '[r]stp-path-cost' accordingly.
+   - OpenFlow:
+     * New OpenFlow extension NXT_CT_FLUSH to flush connections matching
+       the specified fields.
+   - ovs-ctl:
+     * New option '--dump-hugepages' to include hugepages in core dumps. This
+       can assist with postmortem analysis involving DPDK, but may also produce
+       significantly larger core dump files.
+   - ovs-dpctl and 'ovs-appctl dpctl/' commands:
+     * 'flush-conntrack' is now capable of handling partial 5-tuple,
+        with additional optional parameter to specify the reply direction.
+   - ovs-ofctl:
+     * New command 'flush-conntrack' that accepts zone and 5-tuple (or partial
+       5-tuple) for both directions.
+   - Support for travis-ci.org based continuous integration builds has been
+     dropped.
+   - Userspace datapath:
+     * Add '-secs' argument to appctl 'dpif-netdev/pmd-rxq-show' to show
+       the pmd usage of an Rx queue over a configurable time period.
+     * Add new experimental PMD load based sleeping feature. PMD threads can
+       request to sleep up to a user configured 'pmd-maxsleep' value under
+       low load conditions.
+
 
 v3.0.0 - 15 Aug 2022
 --------------------

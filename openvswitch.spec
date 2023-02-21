@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : openvswitch
-Version  : 3.0.3
-Release  : 81
-URL      : https://www.openvswitch.org/releases/openvswitch-3.0.3.tar.gz
-Source0  : https://www.openvswitch.org/releases/openvswitch-3.0.3.tar.gz
+Version  : 3.1.0
+Release  : 82
+URL      : https://www.openvswitch.org/releases/openvswitch-3.1.0.tar.gz
+Source0  : https://www.openvswitch.org/releases/openvswitch-3.1.0.tar.gz
 Source1  : openvswitch.service
 Summary  : Open vSwitch
 Group    : Development/Tools
@@ -29,6 +29,9 @@ BuildRequires : pypi-sphinx
 BuildRequires : python3-dev
 BuildRequires : util-linux
 BuildRequires : valgrind
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 
 %description
 Open vSwitch provides standard network bridging functions and
@@ -108,31 +111,31 @@ staticdev components for the openvswitch package.
 
 
 %prep
-%setup -q -n openvswitch-3.0.3
-cd %{_builddir}/openvswitch-3.0.3
+%setup -q -n openvswitch-3.1.0
+cd %{_builddir}/openvswitch-3.1.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1672190097
+export SOURCE_DATE_EPOCH=1677008726
 unset LD_AS_NEEDED
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$FFLAGS -fno-lto "
-export FFLAGS="$FFLAGS -fno-lto "
-export CXXFLAGS="$CXXFLAGS -fno-lto "
+export CFLAGS="$CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
 %configure
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1672190097
+export SOURCE_DATE_EPOCH=1677008726
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/openvswitch
-cp %{_builddir}/openvswitch-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007
-cp %{_builddir}/openvswitch-%{version}/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453
-cp %{_builddir}/openvswitch-%{version}/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6
+cp %{_builddir}/openvswitch-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/3c434742aa273ef814bb7a58fdb4623df42da007 || :
+cp %{_builddir}/openvswitch-%{version}/NOTICE %{buildroot}/usr/share/package-licenses/openvswitch/d268d05a46cd45e4548e7a3dcc43f16b565a8453 || :
+cp %{_builddir}/openvswitch-%{version}/python/ovs/compat/sortedcontainers/LICENSE %{buildroot}/usr/share/package-licenses/openvswitch/e79dc019b36c084ccc00738699f7c50030a3a0b6 || :
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.service
@@ -191,6 +194,10 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/share/openvswitch/scripts/ovs-kmod-ctl
 /usr/share/openvswitch/scripts/ovs-lib
 /usr/share/openvswitch/scripts/ovs-save
+/usr/share/openvswitch/scripts/usdt/bridge_loop.bt
+/usr/share/openvswitch/scripts/usdt/dpif_nl_exec_monitor.py
+/usr/share/openvswitch/scripts/usdt/upcall_cost.py
+/usr/share/openvswitch/scripts/usdt/upcall_monitor.py
 /usr/share/openvswitch/vswitch.ovsschema
 /usr/share/openvswitch/vtep.ovsschema
 
@@ -222,6 +229,7 @@ install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/openvswitch.servi
 /usr/include/openvswitch/ofp-actions.h
 /usr/include/openvswitch/ofp-bundle.h
 /usr/include/openvswitch/ofp-connection.h
+/usr/include/openvswitch/ofp-ct.h
 /usr/include/openvswitch/ofp-ed-props.h
 /usr/include/openvswitch/ofp-errors.h
 /usr/include/openvswitch/ofp-flow.h
