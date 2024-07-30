@@ -1,0 +1,7 @@
+/etc/:
+/etc/bash_completion.d:
+/etc/openvswitch:
+bash_completion.d
+openvswitch
+ovs-appctl-bashcomp.bash
+ovs-vsctl-bashcomp.bash

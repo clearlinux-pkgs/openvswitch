@@ -1,10 +1,10 @@
 Configure miss: MSVC x64 compiler
 Configure miss: bpf/libbpf.h
-Configure miss: bpf/libbpf.h presence
-Configure miss: bpf/libbpf.h usability
 Configure miss: connect in -lsocket
 Configure miss: dot
 Configure miss: flake8
+Configure miss: g++ option to enable C++11 features
+Configure miss: gcc options needed to detect all undeclared functions
 Configure miss: net/if_mib.h
 Configure miss: pthread_set_name_np
 Configure miss: sphinx-build-2
@@ -17,6 +17,7 @@ Configure miss: whether DPIF AVX512 is default implementation
 Configure miss: whether MFEX Autovalidator is default implementation
 Configure miss: whether USDT probes are enabled
 Configure miss: whether actions Autovalidator is default implementation
+Configure miss: whether compiler correctly emits AVX512-VPOPCNTDQ
 Configure miss: whether dpdk is enabled
 Configure miss: whether gcc accepts -Qunused-arguments
 Configure miss: whether gcc accepts -Warray-bounds-pointer-arithmetic
@@ -24,3 +25,4 @@ Configure miss: whether gcc accepts -Wno-null-pointer-arithmetic
 Configure miss: whether gcc accepts -Wthread-safety
 Configure miss: whether strtok_r macro segfaults on some inputs
 Configure miss: whether sys_siglist is declared
+Configure miss: x86_64-generic-linux-gnu-file
