@@ -8,7 +8,7 @@
 %define keepstatic 1
 Name     : openvswitch
 Version  : 3.4.0
-Release  : 84
+Release  : 85
 URL      : https://www.openvswitch.org/releases/openvswitch-3.4.0.tar.gz
 Source0  : https://www.openvswitch.org/releases/openvswitch-3.4.0.tar.gz
 Source1  : openvswitch.service
