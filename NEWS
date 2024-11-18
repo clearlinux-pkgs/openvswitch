@@ -1,3 +1,9 @@
+v3.4.1 - 15 Nov 2024
+--------------------
+   - Bug fixes
+   - DPDK:
+     * OVS validated with DPDK 23.11.2.
+
 v3.4.0 - 15 Aug 2024
 --------------------
    - Option '--mlockall' now only locks memory pages on fault, if possible.

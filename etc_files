@@ -3,5 +3,6 @@
 /etc/openvswitch:
 bash_completion.d
 openvswitch
+openvswitch' ']'
 ovs-appctl-bashcomp.bash
 ovs-vsctl-bashcomp.bash
